@@ -76,7 +76,6 @@
     "@snyk/snyk-hex-plugin": "1.1.4",
     "@types/isexe": "^2.0.1",
     "@types/marked": "^4.0.0",
-    "@types/which": "^2.0.1",
     "abbrev": "^1.1.1",
     "adm-zip": "^0.5.9",
     "ansi-escapes": "3.2.0",
@@ -136,7 +135,6 @@
     "tar": "^6.1.2",
     "tempy": "^1.0.1",
     "uuid": "^8.3.2",
-    "which": "^2.0.2",
     "wrap-ansi": "^5.1.0"
   },
   "devDependencies": {

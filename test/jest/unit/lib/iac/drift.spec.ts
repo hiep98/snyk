@@ -1,7 +1,10 @@
-import { findDriftCtl, parseArgs } from '../../../../../src/lib/iac/drift';
+import {
+  driftctlVersion,
+  findDriftCtl,
+  parseArgs,
+} from '../../../../../src/lib/iac/drift';
 import * as cacheDir from 'cachedir';
 import * as isExe from 'isexe';
-import * as which from 'which';
 const cache = cacheDir('snyk');
 
 describe('driftctl integration', () => {
@@ -69,17 +72,9 @@ describe('driftctl integration', () => {
     expect(path).toEqual('var env path');
   });
 
-  it('findDriftctl fallback to $PATH when DRIFTCTL_PATH is not set', async () => {
+  it('findDriftctl fallback to cache when DRIFTCTL_PATH is not set', async () => {
     jest.spyOn(isExe, 'sync').mockReturnValue(true);
-    jest.spyOn(which, 'sync').mockReturnValue('value from $PATH');
-    const path = await findDriftCtl();
-    expect(path).toEqual('value from $PATH');
-  });
-
-  it('findDriftctl fallback to cache when DRIFTCTL_PATH is not set and there is nothing in $PATH', async () => {
-    jest.spyOn(isExe, 'sync').mockReturnValue(true);
-    jest.spyOn(which, 'sync').mockReturnValue(null);
-    const driftctlPath = cache + '/driftctl';
+    const driftctlPath = cache + '/driftctl_' + driftctlVersion;
 
     const path = await findDriftCtl();
     expect(path).toEqual(driftctlPath);

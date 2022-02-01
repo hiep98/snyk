@@ -2,16 +2,15 @@ import * as needle from 'needle';
 import * as fs from 'fs';
 import * as debugLib from 'debug';
 import * as isExe from 'isexe';
-import * as which from 'which';
 import * as cacheDir from 'cachedir';
 import * as child_process from 'child_process';
 import * as os from 'os';
 
 const debug = debugLib('drift');
-const dctlBaseUrl =
-  'https://github.com/snyk/driftctl/releases/latest/download/driftctl';
+export const driftctlVersion = 'v0.19.0';
+const dctlBaseUrl = 'https://github.com/snyk/driftctl/releases/download/';
 const cache = cacheDir('snyk');
-const driftctlPath = cache + '/driftctl';
+const driftctlPath = cache + '/driftctl_' + driftctlVersion;
 
 interface DriftCTLOptions {
   quiet?: true;
@@ -113,7 +112,7 @@ export function parseArgs(
 }
 
 export async function driftctl(args: string[]): Promise<number> {
-  debug('driftctl(%s)', args);
+  debug('running driftctl %s ', args.join(' '));
 
   const path = await findOrDownload();
 
@@ -163,14 +162,6 @@ export async function findDriftCtl(): Promise<string> {
       debug('Found driftctl in $DRIFTCTL_PATH: %s', dctlPath);
       return dctlPath;
     }
-  }
-
-  // Lookup in user path
-  dctlPath = which.sync('driftctl', { all: false, nothrow: true });
-  if (dctlPath != null) {
-    debug('Found driftctl in $PATH: %s', dctlPath);
-    console.log('Found driftctl in $PATH: %s', dctlPath);
-    return dctlPath;
   }
 
   // lookup in app cache
@@ -241,5 +232,5 @@ function driftctlUrl(): string {
       break;
   }
 
-  return `${dctlBaseUrl}_${platform}_${arch}${ext}`;
+  return `${dctlBaseUrl}/${driftctlVersion}/driftctl_${platform}_${arch}${ext}`;
 }
