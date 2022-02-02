@@ -14,7 +14,7 @@ const checkDependencies = async () => {
   console.log('-'.repeat(32));
   console.log();
 
-  for (const workspaceGlob of packageJson.workspaces) {
+  for (const workspaceGlob of ['./'].concat(packageJson.workspaces)) {
     const workspacePaths = glob.sync(workspaceGlob).map((p) => path.resolve(p));
     for (const workspacePath of workspacePaths) {
       console.log(`Checking ${workspacePath}`);
